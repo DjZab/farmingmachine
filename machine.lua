@@ -1,5 +1,15 @@
+-- Einige Tube-Funktionen fehlen noch
+-- Aktuell ohne Pipeworks testen !
+
 local is_craftable = false
-local tube_entry = "^pipeworks_tube_connection_metallic.png"
+
+if minetest.get_modpath("pipeworks") then
+	local tube_entry = "^pipeworks_tube_connection_metallic.png"
+-- Prüfen, ob überhaupt nötig
+else
+	local tube_entry = ""
+end
+
 -- Anpassen:
 local machine_eject_dir = vector.new(0,1,0)
 
@@ -11,7 +21,7 @@ local function set_machine_formspec(meta)
       		"list[context;output;4,1;4,4;]"..
       		"button[1,6;3,1;seed;Seed]"..
       		"button[3,6;3,1;harvest;Harvest]"..
-		-- Prüfen
+		-- Prüfen (Falls Probleme: on_rightclick mit config_formspec implementieren)
 		if meta:get_string("owner") == (current_player or "") then
       			"button[5,6;3,1;config;Configuration]"..
 		end
@@ -27,7 +37,13 @@ local function set_machine_formspec(meta)
 end
 
 local function set_config_formspec(meta)
---TODO	
+	local formspec = "size[10,14]"..
+		"label[1,0;Configuration Menu]"..
+		"field[3,1;1,1;width;Width (1-16) :]"..
+		"field[5,1;1,1;depth;Depth (1-16) :]"..
+		"button[7,6;3,1;return;Return]"..
+		"listcolors[#000000;#A9A9A9]"..
+      		"bgcolor[#DEB887;true]"
 end
 
 local function machine_recieve_fields(pos, formname, fields, sender)
@@ -36,17 +52,28 @@ local function machine_recieve_fields(pos, formname, fields, sender)
 	
 	--if fields.input
 	--if fields.output
-	if fields.seed
-	if fields.harvest
-	if fields.config
-	--if fiedls.exit
+	if fields.seed then
+		if minetest.get_modpath("mobs_animal") then
+			minetest.sound_play("mobs_chicken", {pos = pos, gain = 1.0, max_hear_distance = 10})
+		end
+		--TODO
+	end
+	if fields.harvest then
+		if minetest.get_modpath("mobs_animal") then
+			minetest.sound_play("mobs_cow", {pos = pos, gain = 1.0, max_hear_distance = 10})
+		end
+		--TODO
+	end
+	if fields.config then
+		set_config_formspec(meta)
+	end
+	if fields.return then
+		set_machine_formspec(meta)
+	end
+	--if fields.exit
 	--if fields.main
 end
 
-local function config_recieve_fields(pos,formname,fields,sender)
---TODO	
-end
-	
 -- Craft ausdenken und prüfen
 if is_craftable then    
 	minetest.register_craft({
@@ -61,12 +88,17 @@ end
 
 minetest.register_node("farmingmachine:machine", {
 	description = "Farming Machine",
-	groups = {cracky=2},
-	--inventory_image = "",
-	--tiles =
-	-- Design ergänzen
+	tiles = {
+		"default_copper_block.png"..tube_entry,
+		"default_copper_block.png"..tube_entry,
+		"default_copper_block.png"..tube_entry,
+		"default_copper_block.png"..tube_entry,
+		"default_copper_block.png^farming_wheat.png",
+		"default_copper_block.png"..tube_entry
+	},
+	-- Schauen, ob tubedevice stört, wenn Pipeworks nicht vorhanden
+	groups = {cracky=2, tubedevice=1, tubedevice_receiver=1},
 	paramtype2 = "facedir",
-	--sound = {} 
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -77,8 +109,7 @@ minetest.register_node("farmingmachine:machine", {
 		inv:set_size("input", 2*2)
 		inv:set_size("output", 4*4)
 	end,
-	
-	-- Um Tube-Funktionalität erweitern (siehe Quarry)
+		
 	after_place_node = function(pos, placer, itemstack)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner", (placer:get_player_name()) or ""))
@@ -94,8 +125,32 @@ minetest.register_node("farmingmachine:machine", {
 		return false
 	end,
 	
-	--[[on_receive_fields = function(pos, formname, fields, sender)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()]]
-	--after_dig_node =
+	on_receive_fields = machine_recieve_fields,
+	
+	-- TODO und prüfen
+	if minetest.get_modpath("pipeworks") then
+		after_dig_node = pipeworks.scan_for_tube_objects
+		tube = {
+			insert_object = function(pos, node, stack, direction)
+				local meta = minetest.get_meta(pos)
+				local inv = meta:get_inventory()
+				return inv:add_item("input", stack)
+			end,
+			can_insert = function(pos, node, stack, direction)
+				local meta = minetest.get_meta(pos)
+				local inv = meta:get_inventory()
+				if meta:get_int("splitstacks") == 1 then
+					stack = stack:peek_item(1)
+				end
+				return inv:room_for_item("input", stack)
+			end,
+			input_inventory = "input",
+			connect_sides = {left=1, right=1, back=1, top=1,bottom=1}
+	end
 }
+	
+	
+	
+	
+	
+	
