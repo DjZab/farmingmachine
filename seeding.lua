@@ -1,12 +1,17 @@
--- function to check for valid seeds
-local function check_valid_seed(sname)
-  
-    for i in ipairs(seeder_seed) do
-      if sname == seeder_seed[i][1] then return true end
+function check_input(node)
+	for _, val in ipairs(farmingmachine_registrations) do
+		minetest.chat_send_all(farmingmachine_registrations[val][1])
+	end
+	--minetest.chat_send_all(farmingmachine_registrations[1][1])
+ --[[   for _, val in ipairs(farmingmachine_registrations) do
+		if val == farmingmachine_registrations[_][0] then
+			return true
+		end
     end
-    return false
+    return false]]
 end
 
+--[[
 --function to give name of seedlings
 local function give_seedling(sname, util)
 
@@ -150,4 +155,4 @@ local function seeder_dig(pos, current_charge, seednum, seedstack, user)
 	local remaining_charge, seednum, seedstack = recursive_dig(pos, current_charge, seednum, seedstack, user)
 	minetest.sound_play("farming_nextgen_seeder", {pos = pos, gain = 1.0, max_hear_distance = 10})
 	return remaining_charge, seednum, seedstack
-end
+end]]
