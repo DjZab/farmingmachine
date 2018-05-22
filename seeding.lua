@@ -1,8 +1,12 @@
 local seed = nil
 -- In die Maschine
-local dir = get_dir()
+-- local dir = get_dir()
 local start = nil
 
+--[[
+Compares the given node from the input-field with the registered nodes.
+Returns bool and sets the variable seeds
+]]
 function set_seed(node)
 	for _, val in ipairs(farmingmachine_registrations) do
 		if node == farmingmachine_registrations[val][1] then
@@ -11,10 +15,12 @@ function set_seed(node)
 			return true
 		end
 	end
+	seed = nil
 	minetest.chat_send_all("set_seed: False")
 	return false
 end
 
+-- Returns the seedling parameter from the variable seed
 function get_seedling(node)
 	if not seed == nil then
 		minetest.chat_send_all("get_seedling: ".. seed[2])
@@ -25,6 +31,7 @@ function get_seedling(node)
 	end
 end
 
+--ToDo: In die Maschine verschieben, da die Direction auch für den Harvest-Prozess benötigt wird
 function get_dir()
 	--In after_place testen
 	local dir = minetest.facedir_to_dir(node.param2)
@@ -40,7 +47,8 @@ function get_dir()
 	end
 end
 
-function search_left()
+--ToDo: Siehe get_dir()
+function search_left(fdir)
 	
 end
 
