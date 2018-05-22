@@ -9,13 +9,14 @@ Returns bool and sets the variable seeds
 ]]
 function set_seed(node)
 	for _, val in ipairs(farmingmachine_registrations) do
-		if node == farmingmachine_registrations[val][1] then
-			seed == farmingmachine_registrations[val]
-			minetest.chat_send_all("set_seed: True")
+		if node == farmingmachine_registrations[_][1] then
+			seed = farmingmachine_registrations[_]
+			minetest.chat_send_all("set_seed:".. seed[2])
 			return true
 		end
 	end
 	seed = nil
+	minetest.chat_send_all(farmingmachine_registrations[1][1])
 	minetest.chat_send_all("set_seed: False")
 	return false
 end
@@ -41,9 +42,9 @@ function get_dir()
 		minetest.chat_send_all("Replace the machine, you cheater!")
 		return
 	elseif pos.x ~= 0 then
-		
+		minetest.chat_send_all("get_dir1: x = ".. dir.x.. "z = ".. dir.z)
 	else
-		
+		minetest.chat_send_all("get_dir2: x = ".. dir.x.. "z = ".. dir.z)
 	end
 end
 
