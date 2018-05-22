@@ -57,7 +57,7 @@ local function machine_receive_fields(pos, formname, fields, sender)
 			minetest.chat_send_player(sender:get_player_name(), "There are no seeds in the machine!")
 		else
 			--TODO: Übergabe des Stackitems
-			if is_valid("blub") then
+			if set_seed("blub") then
 				-- Eigentliche arbeit einfügen
 				if minetest.get_modpath("mobs_animal") then
 					minetest.sound_play("mobs_chicken", {pos = pos, gain = 1.0, max_hear_distance = 10})
