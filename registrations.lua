@@ -1,12 +1,12 @@
 -- The default soils
-local soil_nodenames = {
+soil_nodenames = {
 	"farming:soil",
 	"farming:soil_wet",
 	"farming:desert_sand_soil",
 	"farming:desert_sand_soil_wet"
 }
 
-local farmingmachine_registrations = {
+farmingmachine_registrations = {
 -- farming
 	{"farming:beetroot", "farming:beetroot_1", "farming:beetroot_5"},
 	{"farming:blueberries", "farming:blueberry_1", "farming:blueberry_4"},
