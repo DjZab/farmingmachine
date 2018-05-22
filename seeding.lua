@@ -1,31 +1,50 @@
-function check_input(node)
+local seed = nil
+-- In die Maschine
+local dir = get_dir()
+local start = nil
+
+function set_seed(node)
 	for _, val in ipairs(farmingmachine_registrations) do
-		minetest.chat_send_all(farmingmachine_registrations[val][1])
-	end
-	--minetest.chat_send_all(farmingmachine_registrations[1][1])
- --[[   for _, val in ipairs(farmingmachine_registrations) do
-		if val == farmingmachine_registrations[_][0] then
+		if node == farmingmachine_registrations[val][1] then
+			seed == farmingmachine_registrations[val]
+			minetest.chat_send_all("set_seed: True")
 			return true
 		end
-    end
-    return false]]
+	end
+	minetest.chat_send_all("set_seed: False")
+	return false
+end
+
+function get_seedling(node)
+	if not seed == nil then
+		minetest.chat_send_all("get_seedling: ".. seed[2])
+		return seed[2]
+	else
+		minetest.chat_send_all("get_seedling: (nil)")
+		return ""
+	end
+end
+
+function get_dir()
+	--In after_place testen
+	local dir = minetest.facedir_to_dir(node.param2)
+	local pos = new.vector(pos)
+	
+	if pos.y ~=0 then
+		minetest.chat_send_all("Replace the machine, you cheater!")
+		return
+	elseif pos.x ~= 0 then
+		
+	else
+		
+	end
+end
+
+function search_left()
+	
 end
 
 --[[
---function to give name of seedlings
-local function give_seedling(sname, util)
-
-     if not util then
-	  for i in ipairs(seeder_seed) do
-	    if sname == seeder_seed[i][1] then return seeder_seed[i][2] end
-	  end
-     else
-	  for i in ipairs(seeder_utils) do
-	    if sname == seeder_utils[i][1] then return seeder_utils[i][2] end
-	  end
-     end
-    return nil
-end
 
 --- Iterator over positions to try to saw around a sawed node.
 -- This returns positions in a 3x1x3 area around the position, plus the
