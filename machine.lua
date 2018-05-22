@@ -28,6 +28,7 @@ local function set_machine_formspec(meta)
       		"listring[context;output]"..
       		"listring[current_player;main]"..
       		"listring[context;input]"..
+			"listring[current_player;main]"..
       		"button[0,4;3,1;conf;Configuration]"
 	
 	--local infotext = "How to use this thing"
@@ -56,8 +57,7 @@ local function machine_receive_fields(pos, formname, fields, sender)
 		if inv:is_empty("input") then
 			minetest.chat_send_player(sender:get_player_name(), "There are no seeds in the machine!")
 		else
-			--TODO: Übergabe des Stackitems
-			if set_seed("blub") then
+			if set_seed(inv:get_stack("input", 1):get_name()) then
 				-- Eigentliche arbeit einfügen
 				if minetest.get_modpath("mobs_animal") then
 					minetest.sound_play("mobs_chicken", {pos = pos, gain = 1.0, max_hear_distance = 10})
@@ -127,8 +127,10 @@ minetest.register_node("farmingmachine:machine", {
 		meta:set_string("owner", (placer:get_player_name() or ""))
 		meta:set_string("infotext", "Farming Machine (owned by ".. (placer:get_player_name() or "").. ")")
 		--Testen, ob das funktioniert:
-		--local fdir = minetest.facedir_to_dir(node.param2)	
-		--meta:set_string("fdir", fdir)
+		local node = minetest.get_node(pos)
+		local fdir = minetest.facedir_to_dir(node.param2)
+		meta:set_string("fdir", fdir)
+		minetest.chat_send_all("get_dir1: x = ".. fdir.x.. "z = ".. fdir.z)
 		set_machine_formspec(meta)
 	end,
 	
