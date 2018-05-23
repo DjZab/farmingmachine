@@ -39,7 +39,7 @@ function get_dir()
 	local pos = new.vector(pos)
 	
 	if pos.y ~=0 then
-		minetest.chat_send_all("Replace the machine, you cheater!")
+		minetest.chat_send_all("Replace the machine, this direction is not allowed!")
 		return
 	elseif pos.x ~= 0 then
 		minetest.chat_send_all("get_dir1: x = ".. dir.x.. "z = ".. dir.z)
