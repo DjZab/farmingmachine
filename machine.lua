@@ -126,7 +126,6 @@ minetest.register_node("farmingmachine:machine", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner", (placer:get_player_name() or ""))
 		meta:set_string("infotext", "Farming Machine (owned by ".. (placer:get_player_name() or "").. ")")
-		--Testen, ob das funktioniert:
 		local node = minetest.get_node(pos)
 		local fdir = minetest.facedir_to_dir(node.param2)
 		meta:set_string("fdir", fdir)
