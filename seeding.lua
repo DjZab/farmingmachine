@@ -42,15 +42,19 @@ function get_dir()
 		minetest.chat_send_all("Replace the machine, this direction is not allowed!")
 		return
 	elseif pos.x ~= 0 then
+		mdir = new.vector(0,0,-1)
 		minetest.chat_send_all("get_dir1: x = ".. dir.x.. "z = ".. dir.z)
 	else
+		mdir = new.vector(-1,0,0)
 		minetest.chat_send_all("get_dir2: x = ".. dir.x.. "z = ".. dir.z)
 	end
 end
 
 --ToDo: Siehe get_dir()
-function search_left(fdir)
-	
+-- Scanne den grund, bis was anderes als Soil kommt
+	-- Wandere vor die Maschine
+	-- pos = vector.add(pos, fdir)
+function search_left(pos, mdir)
 end
 
 --[[
